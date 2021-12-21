@@ -120,7 +120,9 @@ class SA: #SimulatedAnnealing
                 bestPath = newConfiguration;
                 self.bestPath = newConfiguration;
             elif self.AcceptanceProbability(newEnergy, self, newConfiguration, oldConfiguration): #falls wahrscheinlichkeit zutrifft, übernimm schlechtere energie
-                self.path = oldConfiguration;
+                self.bestEnergy = newEnergy;
+                bestPath = newConfiguration;
+                self.bestPath = newConfiguration;
             self.currentTemp = self.ReduceTemperature(i); #aktualisiere temperatur -> ist das so gedacht? I guess
             
         # self.currentEnergy = bestEnergy;

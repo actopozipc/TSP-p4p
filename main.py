@@ -23,7 +23,7 @@ allEnergies = []
 allPaths = []
 #Seed the numpy-RNG to 223
 np.random.seed(223);  
-towns = ts.createNTowns(N=5); #Erstelle N Städte
+towns = ts.createNTowns(N=10); #Erstelle N Städte
 #Zeichne x,y Koordinaten als Punkte
 x = []
 y = []
@@ -32,7 +32,7 @@ for t in towns:
 plt.plot(x,y)
 plt.ioff()
 #Probier 100 mal neue Update 
-cycles = 100
+cycles = 50
 sa = SA(towns)
 i = 0;
 #Super hohe Standardkosten. Falls Kosten von einem Pfad nach einem Update geringer sind, speichere als minimalste
