@@ -39,10 +39,10 @@ sa = SA(towns)
 i = 0;
 # Super hohe Standardkosten. Falls Kosten von einem Pfad nach einem update geringer sind, speichere als minimalste
 cost = 500;
-minimalCost = cost;
+minimalCost = cost
 bestPath = []
 while i < cycles:
-    bestP = sa.update();
+    bestP = sa.update()
     i = i + 1;
     print(i, " Zyklus durchlaufen von", cycles)
     #cost = sa.currentEnergy;
@@ -69,8 +69,8 @@ for p in sa.allPaths:
 for t in bestPath:
     x.append(sa.towns[t].x)
     y.append(sa.towns[t].y)
-print("Anzahl der gefundenen Pfade:", len(sa.allPaths), "/",
-      math.factorial(len(sa.towns)))  # Wie viele verschiedene Pfade generiert wurden von theoretisch möglichen
+print("Anzahl der gefundenen Pfade:", len(sa.allPaths), "/", math.factorial(len(sa.towns)))  # Wie viele verschiedene
+# Pfade generiert wurden von theoretisch möglichen
 print("Best path generated:", realLowestE)
 #print("Path selected:", minimalCost)
 print("Path returned:", ts.sumOfEnergies(sa.towns, bestP))
