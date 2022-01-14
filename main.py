@@ -18,6 +18,21 @@ Neuer Pfad wird mit einer Wahrscheinlichkeit als bester Pfad übernommen
         ->Auf Seite 2 gegeben in Gleichung 3
 
 '''
+def DrawTowns(towns, plt):
+    for t in towns:
+        plt.scatter(t.x, t.y)
+def DrawPath(bestP):
+    x = []
+    y = []
+    DrawTowns(towns, plt)
+    for t in bestP:
+        x.append(sa.towns[t].x)
+        y.append(sa.towns[t].y)
+
+    plt.plot(x, y)
+    fig.canvas.draw()
+    plt.pause(0.05)
+    plt.clf()
 ts = TS();  # Klasse in der Methoden zum Erstellen der Städte sind
 allEnergies = []
 allPaths = []
@@ -29,20 +44,21 @@ np.random.seed()  # unseed
 # Zeichne x,y Koordinaten als Punkte
 x = []
 y = []
-for t in towns:
-    plt.scatter(t.x, t.y)
-plt.plot(x, y)
-plt.ioff()
-# Probier 100 mal neue Update
+fig = plt.figure()
+ax = fig.gca()
+fig.show()
+DrawTowns(towns, plt)
+plt.ion
+# Probier 100 mal neue update
 cycles = 100
 sa = SA(towns)
 i = 0;
-# Super hohe Standardkosten. Falls Kosten von einem Pfad nach einem Update geringer sind, speichere als minimalste
+# Super hohe Standardkosten. Falls Kosten von einem Pfad nach einem update geringer sind, speichere als minimalste
 cost = 500;
-minimalCost = cost;
+minimalCost = cost
 bestPath = []
 while i < cycles:
-    bestP = sa.Update();
+    bestP = sa.update()
     i = i + 1;
     print(i, " Zyklus durchlaufen von", cycles)
     #cost = sa.currentEnergy;
@@ -53,26 +69,38 @@ while i < cycles:
         currentE = ts.sumOfEnergies(sa.towns, p)
         if currentE == minimalCost:
             bestPath = p'''
-    tempPath = []
-    realLowestE = np.min(sa.allEnergies)  # minimalst generierter Weg -> Kann sein dass ein besserer Weg existiert,
+    if i == 0 or i % (cycles / 50) == 0:
+        DrawPath(bestP)
+        plt.title(ts.sumOfEnergies(sa.towns, bestP))
+
+
+realLowestE = np.min(sa.allEnergies)  # minimalst generierter Weg -> Kann sein dass ein besserer Weg existiert,
     # dieser aber nicht wegen Wahrscheinlichkeit übernommen wurde
     # Find the path with the energy of the lowest energy
-    lowestE = ts.sumOfEnergies(sa.towns, sa.allPaths[0])
-    for p in sa.allPaths:
-        currentE = ts.sumOfEnergies(sa.towns, p)
-        if currentE == realLowestE:
-            bestPath = p
-            lowestE = ts.sumOfEnergies(sa.towns, p)
-            minimalCost = currentE
+lowestE = ts.sumOfEnergies(sa.towns, sa.allPaths[0])
+for p in sa.allPaths:
+    currentE = ts.sumOfEnergies(sa.towns, p)
+    if currentE == realLowestE:
+        bestPath = p
+        lowestE = ts.sumOfEnergies(sa.towns, p)
+        minimalCost = currentE
     #Zeichne Striche in der Reihenfolge von Path
 for t in bestPath:
     x.append(sa.towns[t].x)
     y.append(sa.towns[t].y)
-print("Anzahl der gefundenen Pfade:", len(sa.allPaths), "/",
-      math.factorial(len(sa.towns)))  # Wie viele verschiedene Pfade generiert wurden von theoretisch möglichen
+print("Anzahl der gefundenen Pfade:", len(sa.allPaths), "/", math.factorial(len(sa.towns)))  # Wie viele verschiedene
+# Pfade generiert wurden von theoretisch möglichen
 print("Best path generated:", realLowestE)
 #print("Path selected:", minimalCost)
 print("Path returned:", ts.sumOfEnergies(sa.towns, bestP))
+print(bestPath)
+plt.clf()
+DrawTowns(towns, plt)
+x = []
+y = []
+for t in bestPath:
+    x.append(sa.towns[t].x)
+    y.append(sa.towns[t].y)
 plt.plot(x, y)
 # Schreibe Koordinaten und Pfadkosten auf den Graphen drauf
 for t in range(1, len(bestPath)):
@@ -81,5 +109,4 @@ for t in range(1, len(bestPath)):
     plt.text(sa.towns[bestPath[t - 1]].x + 0.01, sa.towns[bestPath[t - 1]].y + 0.01,
              str((round(x[t - 1], 2), round(y[t - 1], 2))), fontsize=8)
 plt.title(ts.sumOfEnergies(sa.towns, bestPath))
-
 plt.show()
