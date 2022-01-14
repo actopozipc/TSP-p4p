@@ -4,8 +4,13 @@ import numpy as np
 import random
 
 
+
+
 class SA:  # SimulatedAnnealing
-    def __init__(self, towns, startTemp=1, cycles=100):
+    def reduceTemperature(self, k, q=1):
+        return self.startTemp * k ** (-q)  # Gleichung 6
+
+    def __init__(self, towns, cycles, startTemp=1):
         self.startTemp = startTemp
         self.currentTemp = startTemp
         self.stopTemp = 0
@@ -22,8 +27,13 @@ class SA:  # SimulatedAnnealing
         self.cycles = cycles  # Wie oft Algo wiederholt werden soll
         self.count = math.factorial(len(self.towns))
 
-    def reduceTemperature(self, k, q=1):
-        return self.startTemp * k ** (-q)  # Gleichung 6
+        self.temps = []
+
+        i = 0
+        q = 1
+        while i < cycles:
+            self.temps.append(startTemp * (i+1) ** (-q))
+            i+=1
 
     # wird nicht verwendet
     '''def Boltzmann(self, towns, T, paths, currentEnergy):
@@ -115,7 +125,7 @@ class SA:  # SimulatedAnnealing
                 bestPath = self.path
                 self.bestPath = self.path
                 self.currentPath = self.path
-            elif self.acceptanceProbability(newEnergy, self):
+            elif self.acceptanceProbability(newEnergy, self, i-1):
                 self.bestEnergy = newEnergy
                 bestPath = self.path
                 self.bestPath = self.path
@@ -124,9 +134,9 @@ class SA:  # SimulatedAnnealing
 
         return bestPath
 
-    def acceptanceProbability(self, newEnergy, sa):
+    def acceptanceProbability(self, newEnergy, sa, cyc):
         deltaE = newEnergy - sa.currentEnergy  # Energiedifferenz
         r = np.random.rand()
         probability = math.exp(
-            -deltaE / sa.currentTemp)
+            -deltaE / sa.temps[cyc])
         return r < probability

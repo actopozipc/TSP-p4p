@@ -54,19 +54,16 @@ fig.show()
 DrawTowns(towns, plt)
 plt.ion
 # Probier 100 mal neue update
-cycles = 200
-sa = SA(towns)
+cycles = 20
+sa = SA(towns, cycles)
 i = 0
 # Super hohe Standardkosten. Falls Kosten von einem Pfad nach einem update geringer sind, speichere als minimalste
 cost = 500
 minimalCost = cost
 bestPath = []
-allTemps = []
+
 while i < cycles:
     bestP = sa.update()
-    
-    if i == 0:
-        allTemps = sa.allTemps
     i = i + 1
     print(i, " Zyklus durchlaufen von", cycles)
 
@@ -132,8 +129,9 @@ for t in range(1, len(bestPath)):
 plt.title(ts.sumOfEnergies(sa.towns, bestPath))
 plt.figure()
 plt.show()
-for i in range(len(allTemps)):
-    allTemps[i] = 1/allTemps[i]
+allTemps = [0 for i in range(cycles)]
+for i in range(len(sa.temps)):
+    allTemps[i] = 1/sa.temps[i]
 plt.plot(avgVarianz, allTemps)
 plt.show()
 '''sumE = 0
