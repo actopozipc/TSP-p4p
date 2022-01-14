@@ -42,7 +42,7 @@ avgEnergies = []
 temps = []
 # Seed the numpy-RNG to 223
 np.random.seed(223)
-towns = ts.createNTowns(N=10);  # Erstelle N Städte
+towns = ts.createNTowns(N=22);  # Erstelle N Städte
 np.random.seed()  # unseed
 
 # Zeichne x,y Koordinaten als Punkte
@@ -54,7 +54,7 @@ fig.show()
 DrawTowns(towns, plt)
 plt.ion
 # Probier 100 mal neue update
-cycles = 20
+cycles = 800
 sa = SA(towns, cycles)
 i = 0
 # Super hohe Standardkosten. Falls Kosten von einem Pfad nach einem update geringer sind, speichere als minimalste
@@ -87,6 +87,7 @@ while i < cycles:
         DrawPath(bestP)
         plt.title(ts.sumOfEnergies(sa.towns, bestP))
 
+print("Loading statistics...")
 
 realLowestE = np.min(sa.allEnergies)  # minimalst generierter Weg -> Kann sein dass ein besserer Weg existiert,
     # dieser aber nicht wegen Wahrscheinlichkeit übernommen wurde
@@ -128,31 +129,12 @@ for t in range(1, len(bestPath)):
              str((round(x[t - 1], 2), round(y[t - 1], 2))), fontsize=8)
 plt.title(ts.sumOfEnergies(sa.towns, bestPath))
 plt.figure()
-plt.show()
+plt.title("Average Variances")
 allTemps = [0 for i in range(cycles)]
 for i in range(len(sa.temps)):
     allTemps[i] = 1/sa.temps[i]
-plt.plot(avgVarianz, allTemps)
+plt.plot(allTemps,avgVarianz)
+plt.figure()
+plt.title("Average Energies")
+plt.plot(allTemps,avgEnergies)
 plt.show()
-'''sumE = 0
-sumVarianz = 0
-
-count = len(sa.allEnergies)
-for i in sa.allEnergies:
-    sumE += i
-
-avgE = sumE/count
-
-for i in sa.allEnergies:
-    sumVarianz += math.pow(i, 2)
-
-varianz = sumVarianz/count - avgE**2
-
-print("avg Energie:", avgE)
-print("varianz:", varianz)'''
-
-
-
-#print(avgVarianz)
-#print(avgEnergies)
-#print(sa.allTemps)

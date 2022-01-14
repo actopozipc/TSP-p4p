@@ -130,13 +130,16 @@ class SA:  # SimulatedAnnealing
                 bestPath = self.path
                 self.bestPath = self.path
                 self.currentPath = self.path
-            self.currentTemp = self.reduceTemperature(i)
+            #self.currentTemp = self.reduceTemperature(i)
 
         return bestPath
 
     def acceptanceProbability(self, newEnergy, sa, cyc):
         deltaE = newEnergy - sa.currentEnergy  # Energiedifferenz
         r = np.random.rand()
-        probability = math.exp(
-            -deltaE / sa.temps[cyc])
-        return r < probability
+        try:
+            probability = math.exp(
+                -deltaE / sa.temps[cyc])
+            return r < probability
+        except:
+            return False
