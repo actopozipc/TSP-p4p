@@ -98,7 +98,6 @@ class SA:  # SimulatedAnnealing
 
         # Bisher besten Zustand speichern
         bestPath = self.path
-        #self.currentTemp = self.startTemp
         for i in range(1, self.cycles, 1):
             if len(self.allPaths) == self.count:  # Falls schon alle Kombinationen generiert, hör auf zu suchen
                 return bestPath
