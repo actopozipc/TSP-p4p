@@ -27,4 +27,5 @@ class TS:
         sum = 0
         for i in range(0, len(towns) - 1, 1):
             sum += self.energyOfTwoTowns(towns[path[i + 1]], towns[path[i]])
+        sum += self.energyOfTwoTowns(towns[path[len(towns)-1]], towns[path[0]])
         return sum
